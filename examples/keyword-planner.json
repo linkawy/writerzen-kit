@@ -1,0 +1,606 @@
+{
+ "note": "Keyword Planner, six English keywords, United States/English, level 3. Clusters carry their keywords in `items`; `urls` is what the grouping is computed from. average_cpc here IS dollars.",
+ "level": {
+  "id": 72658,
+  "task_id": 179404,
+  "level": 3,
+  "status": 1,
+  "clusters_count": 1,
+  "data_count": 6,
+  "clusters_page": 1,
+  "not_in_any_cluster_count": 4,
+  "not_in_any_cluster_page": 1
+ },
+ "clusters": [
+  {
+   "id": 9810886,
+   "level_id": 72658,
+   "name": "ecommerce platform",
+   "topic": "ultimate online store builder",
+   "brief": null,
+   "status_brief": null,
+   "serp_type": "product",
+   "intent": "transactional",
+   "micro_intent": "category/selection",
+   "buying_journey": "consideration",
+   "brand": null,
+   "keyword_count": 2,
+   "search_volume": 15800,
+   "average_cpc": 13.08,
+   "items": [
+    {
+     "id": 168165616,
+     "keyword": "ecommerce platform",
+     "search_volume": 14800,
+     "average_cpc": 12.18,
+     "competition": 10,
+     "monthly_search": [
+      {
+       "month": 8,
+       "year": 2026,
+       "count": 8100
+      },
+      {
+       "month": 7,
+       "year": 2026,
+       "count": 12100
+      },
+      {
+       "month": 6,
+       "year": 2026,
+       "count": 12100
+      },
+      {
+       "month": 5,
+       "year": 2026,
+       "count": 12100
+      },
+      {
+       "month": 4,
+       "year": 2026,
+       "count": 9900
+      },
+      {
+       "month": 3,
+       "year": 2026,
+       "count": 12100
+      },
+      {
+       "month": 2,
+       "year": 2026,
+       "count": 12100
+      },
+      {
+       "month": 1,
+       "year": 2026,
+       "count": 27100
+      },
+      {
+       "month": 12,
+       "year": 2025,
+       "count": 22200
+      },
+      {
+       "month": 11,
+       "year": 2025,
+       "count": 22200
+      },
+      {
+       "month": 10,
+       "year": 2025,
+       "count": 22200
+      },
+      {
+       "month": 9,
+       "year": 2025,
+       "count": 22200
+      }
+     ],
+     "allintitle": null,
+     "cluster_id": 9810886,
+     "intent": "transactional",
+     "micro_intent": "category/selection",
+     "buying_journey": "consideration",
+     "brand": null,
+     "serp_type": "product",
+     "lowest_da": null,
+     "highest_da": null,
+     "average_da": null,
+     "weakspot": 0,
+     "urls": [
+      "bigcommerce.com",
+      "reddit.com",
+      "forbes.com",
+      "reddit.com",
+      "emailvendorselection.com",
+      "zapier.com",
+      "marketsandmarkets.com",
+      "investors.boeing.com",
+      "miva.com",
+      "optimizely.com"
+     ],
+     "trending": false,
+     "cluster": "ecommerce platform",
+     "topic": "ultimate online store builder"
+    },
+    {
+     "id": 168165617,
+     "keyword": "best ecommerce platform",
+     "search_volume": 1000,
+     "average_cpc": 13.98,
+     "competition": 43,
+     "monthly_search": [
+      {
+       "month": 8,
+       "year": 2026,
+       "count": 720
+      },
+      {
+       "month": 7,
+       "year": 2026,
+       "count": 720
+      },
+      {
+       "month": 6,
+       "year": 2026,
+       "count": 880
+      },
+      {
+       "month": 5,
+       "year": 2026,
+       "count": 1000
+      },
+      {
+       "month": 4,
+       "year": 2026,
+       "count": 1000
+      },
+      {
+       "month": 3,
+       "year": 2026,
+       "count": 1300
+      },
+      {
+       "month": 2,
+       "year": 2026,
+       "count": 720
+      },
+      {
+       "month": 1,
+       "year": 2026,
+       "count": 720
+      },
+      {
+       "month": 12,
+       "year": 2025,
+       "count": 720
+      },
+      {
+       "month": 11,
+       "year": 2025,
+       "count": 1000
+      },
+      {
+       "month": 10,
+       "year": 2025,
+       "count": 1300
+      },
+      {
+       "month": 9,
+       "year": 2025,
+       "count": 1900
+      }
+     ],
+     "allintitle": null,
+     "cluster_id": 9810886,
+     "intent": "informational",
+     "micro_intent": "aggregation/overview",
+     "buying_journey": "awareness",
+     "brand": null,
+     "serp_type": "article",
+     "lowest_da": null,
+     "highest_da": null,
+     "average_da": null,
+     "weakspot": 0,
+     "urls": [
+      "reddit.com",
+      "emailvendorselection.com",
+      "reddit.com",
+      "forbes.com",
+      "reddit.com",
+      "zapier.com",
+      "ecomm.design",
+      "bigcommerce.com",
+      "squareup.com",
+      "technologyadvice.com"
+     ],
+     "trending": false,
+     "cluster": "ecommerce platform",
+     "topic": "ultimate online store builder"
+    }
+   ]
+  }
+ ],
+ "orphans": [
+  {
+   "id": 168165619,
+   "keyword": "shopify pricing",
+   "search_volume": 9900,
+   "average_cpc": 7.28,
+   "competition": 42,
+   "monthly_search": [
+    {
+     "month": 8,
+     "year": 2026,
+     "count": 8100
+    },
+    {
+     "month": 7,
+     "year": 2026,
+     "count": 9900
+    },
+    {
+     "month": 6,
+     "year": 2026,
+     "count": 12100
+    },
+    {
+     "month": 5,
+     "year": 2026,
+     "count": 12100
+    },
+    {
+     "month": 4,
+     "year": 2026,
+     "count": 9900
+    },
+    {
+     "month": 3,
+     "year": 2026,
+     "count": 9900
+    },
+    {
+     "month": 2,
+     "year": 2026,
+     "count": 9900
+    },
+    {
+     "month": 1,
+     "year": 2026,
+     "count": 12100
+    },
+    {
+     "month": 12,
+     "year": 2025,
+     "count": 9900
+    },
+    {
+     "month": 11,
+     "year": 2025,
+     "count": 9900
+    },
+    {
+     "month": 10,
+     "year": 2025,
+     "count": 9900
+    },
+    {
+     "month": 9,
+     "year": 2025,
+     "count": 12100
+    }
+   ],
+   "allintitle": null,
+   "cluster_id": null,
+   "intent": "commercial",
+   "micro_intent": "comparison/orientation",
+   "buying_journey": "consideration",
+   "brand": "shopify",
+   "serp_type": "article",
+   "lowest_da": null,
+   "highest_da": null,
+   "average_da": null,
+   "weakspot": 0,
+   "urls": [
+    "shopify.com",
+    "help.shopify.com",
+    "shopify.com",
+    "reddit.com",
+    "a2xaccounting.com",
+    "community.shopify.com",
+    "commerce-ui.com",
+    "changelog.shopify.com",
+    "community.shopify.com",
+    "apps.shopify.com"
+   ],
+   "trending": false,
+   "cluster": null,
+   "topic": null
+  },
+  {
+   "id": 168165621,
+   "keyword": "online store builder",
+   "search_volume": 1600,
+   "average_cpc": 22.51,
+   "competition": 17,
+   "monthly_search": [
+    {
+     "month": 8,
+     "year": 2026,
+     "count": 1300
+    },
+    {
+     "month": 7,
+     "year": 2026,
+     "count": 720
+    },
+    {
+     "month": 6,
+     "year": 2026,
+     "count": 720
+    },
+    {
+     "month": 5,
+     "year": 2026,
+     "count": 1300
+    },
+    {
+     "month": 4,
+     "year": 2026,
+     "count": 1000
+    },
+    {
+     "month": 3,
+     "year": 2026,
+     "count": 1600
+    },
+    {
+     "month": 2,
+     "year": 2026,
+     "count": 880
+    },
+    {
+     "month": 1,
+     "year": 2026,
+     "count": 1600
+    },
+    {
+     "month": 12,
+     "year": 2025,
+     "count": 1300
+    },
+    {
+     "month": 11,
+     "year": 2025,
+     "count": 1900
+    },
+    {
+     "month": 10,
+     "year": 2025,
+     "count": 2900
+    },
+    {
+     "month": 9,
+     "year": 2025,
+     "count": 3600
+    }
+   ],
+   "allintitle": null,
+   "cluster_id": null,
+   "intent": "informational",
+   "micro_intent": "expansional",
+   "buying_journey": "awareness",
+   "brand": null,
+   "serp_type": "article",
+   "lowest_da": null,
+   "highest_da": null,
+   "average_da": null,
+   "weakspot": 0,
+   "urls": [
+    "wix.com",
+    "reddit.com",
+    "squareup.com",
+    "godaddy.com",
+    "freewebstore.com",
+    "store.link",
+    "weebly.com",
+    "mozello.com",
+    "jotform.com",
+    "dokan.co"
+   ],
+   "trending": false,
+   "cluster": null,
+   "topic": null
+  },
+  {
+   "id": 168165618,
+   "keyword": "headless ecommerce",
+   "search_volume": 590,
+   "average_cpc": 14.88,
+   "competition": 36,
+   "monthly_search": [
+    {
+     "month": 8,
+     "year": 2026,
+     "count": 320
+    },
+    {
+     "month": 7,
+     "year": 2026,
+     "count": 480
+    },
+    {
+     "month": 6,
+     "year": 2026,
+     "count": 390
+    },
+    {
+     "month": 5,
+     "year": 2026,
+     "count": 590
+    },
+    {
+     "month": 4,
+     "year": 2026,
+     "count": 880
+    },
+    {
+     "month": 3,
+     "year": 2026,
+     "count": 1900
+    },
+    {
+     "month": 2,
+     "year": 2026,
+     "count": 480
+    },
+    {
+     "month": 1,
+     "year": 2026,
+     "count": 320
+    },
+    {
+     "month": 12,
+     "year": 2025,
+     "count": 260
+    },
+    {
+     "month": 11,
+     "year": 2025,
+     "count": 320
+    },
+    {
+     "month": 10,
+     "year": 2025,
+     "count": 480
+    },
+    {
+     "month": 9,
+     "year": 2025,
+     "count": 880
+    }
+   ],
+   "allintitle": null,
+   "cluster_id": null,
+   "intent": "informational",
+   "micro_intent": "definition",
+   "buying_journey": "awareness",
+   "brand": null,
+   "serp_type": "article",
+   "lowest_da": null,
+   "highest_da": null,
+   "average_da": null,
+   "weakspot": 0,
+   "urls": [
+    "reddit.com",
+    "bigcommerce.com",
+    "reddit.com",
+    "chargebee.com",
+    "reddit.com",
+    "saleor.io",
+    "github.com",
+    "spreecommerce.org",
+    "en.wikipedia.org",
+    "webkul.com"
+   ],
+   "trending": false,
+   "cluster": null,
+   "topic": null
+  },
+  {
+   "id": 168165620,
+   "keyword": "shopify vs woocommerce",
+   "search_volume": 590,
+   "average_cpc": 5.81,
+   "competition": 28,
+   "monthly_search": [
+    {
+     "month": 8,
+     "year": 2026,
+     "count": 260
+    },
+    {
+     "month": 7,
+     "year": 2026,
+     "count": 480
+    },
+    {
+     "month": 6,
+     "year": 2026,
+     "count": 590
+    },
+    {
+     "month": 5,
+     "year": 2026,
+     "count": 880
+    },
+    {
+     "month": 4,
+     "year": 2026,
+     "count": 720
+    },
+    {
+     "month": 3,
+     "year": 2026,
+     "count": 720
+    },
+    {
+     "month": 2,
+     "year": 2026,
+     "count": 480
+    },
+    {
+     "month": 1,
+     "year": 2026,
+     "count": 480
+    },
+    {
+     "month": 12,
+     "year": 2025,
+     "count": 590
+    },
+    {
+     "month": 11,
+     "year": 2025,
+     "count": 480
+    },
+    {
+     "month": 10,
+     "year": 2025,
+     "count": 590
+    },
+    {
+     "month": 9,
+     "year": 2025,
+     "count": 880
+    }
+   ],
+   "allintitle": null,
+   "cluster_id": null,
+   "intent": "commercial",
+   "micro_intent": "comparison/orientation",
+   "buying_journey": "consideration",
+   "brand": null,
+   "serp_type": "article",
+   "lowest_da": null,
+   "highest_da": null,
+   "average_da": null,
+   "weakspot": 0,
+   "urls": [
+    "reddit.com",
+    "woocommerce.com",
+    "reddit.com",
+    "wpallimport.com",
+    "reddit.com",
+    "montonio.com",
+    "reddit.com",
+    "linkedin.com",
+    "forbes.com",
+    "shopify.com"
+   ],
+   "trending": false,
+   "cluster": null,
+   "topic": null
+  }
+ ]
+}

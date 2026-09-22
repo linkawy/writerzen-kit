@@ -1,0 +1,4 @@
+session.txt
+*.xlsx
+out/
+__pycache__/

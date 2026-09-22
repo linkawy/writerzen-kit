@@ -1,0 +1,1222 @@
+{
+ "note": "Topic Discovery, 'ecommerce platform', United States/English. Three of 100 topic entries. Use `headlines` and `related`; ignore `topic`, `relevant` and `searchVolume` - see SKILL.md.",
+ "topics": [
+  {
+   "value": {
+    "type": 1,
+    "topic": "ecommerce platform",
+    "subtopic": "ecommerce platform",
+    "relevant": 100,
+    "headlines": [
+     {
+      "url": "https://jobs.carnivalcorp.com/job/seattle/ecommerce-platform-and-content-enablement-manager/8858/99183593024",
+      "text": "ecommerce platform and content enablement manager at",
+      "cosine": 0.5345224838248487,
+      "length": 8
+     },
+     {
+      "url": "https://www.lightbitslabs.com/solution-guide/how-to-choose-a-cloud-ecommerce-platform-architecture-storage-performance-and-scalability-guide/",
+      "text": "how to choose a cloud ecommerce platform",
+      "cosine": 0.5345224838248487,
+      "length": 8
+     },
+     {
+      "url": "https://www.netsuite.com/portal/products/ecommerce/products/ecommerce.shtml",
+      "text": "netsuite suitecommerce: b2b & b2c ecommerce platform",
+      "cosine": 0.5345224838248487,
+      "length": 8
+     },
+     {
+      "url": "https://www.nopcommerce.com/en",
+      "text": "nopcommerce: free and open-source ecommerce platform asp",
+      "cosine": 0.5345224838248487,
+      "length": 8
+     },
+     {
+      "url": "https://www.znode.com/",
+      "text": "znode: most flexible, scalable b2b ecommerce platform",
+      "cosine": 0.5345224838248487,
+      "length": 8
+     },
+     {
+      "url": "https://www.thgingenuity.com/",
+      "text": "thg ingenuity: enterprise ecommerce platform and fulfilment",
+      "cosine": 0.5345224838248487,
+      "length": 8
+     },
+     {
+      "url": "https://www.confluent.io/blog/us-foods-digital-first-ecommerce-platform/",
+      "text": "building a digital-first ecommerce platform at us foods",
+      "cosine": 0.4999999999999999,
+      "length": 9
+     },
+     {
+      "url": "https://www.lightspeedhq.com/ecom/",
+      "text": "an ecommerce platform built to grow your business",
+      "cosine": 0.4999999999999999,
+      "length": 9
+     },
+     {
+      "url": "https://virtocommerce.com/assets/how-to-choose-ecommerce-platform-guide",
+      "text": "the ultimate guide to choosing an ecommerce platform",
+      "cosine": 0.4999999999999999,
+      "length": 9
+     },
+     {
+      "url": "https://careers.staples.com/en/job/framingham/sr-ecommerce-platform-product-manager-marketplace/44412/100720665312",
+      "text": "sr ecommerce platform product manager-marketplace at staples, inc",
+      "cosine": 0.4999999999999999,
+      "length": 9
+     },
+     {
+      "url": "https://developers.klaviyo.com/en/docs/guide_to_integrating_a_platform_without_a_pre_built_klaviyo_integration",
+      "text": "integrate an ecommerce platform without a pre-built klaviyo integration",
+      "cosine": 0.4714045207910316,
+      "length": 10
+     },
+     {
+      "url": "https://appsumo.com/products/swell/reviews/swell-is-the-ecommerce-platform-that-you-153706/",
+      "text": "swell is the ecommerce platform that you have been dreaming",
+      "cosine": 0.4472135954999579,
+      "length": 11
+     },
+     {
+      "url": "https://www.linkedin.com/pulse/running-ecommerce-platform-like-buying-sports-car-going-fox",
+      "text": "running an ecommerce platform is like buying a sports car and",
+      "cosine": 0.42640143271122083,
+      "length": 12
+     },
+     {
+      "url": "https://www.reddit.com/r/ecommerce/comments/1cwo1uo/what_ecommerce_platform_do_you_use_and_why/",
+      "text": "what e-commerce platform do you use and why?",
+      "cosine": 0.24999999999999994,
+      "length": 9
+     },
+     {
+      "url": "https://www.celerant.com/solutions/ecommerce/",
+      "text": "retail ecommerce software to grow your online business",
+      "cosine": 0.24999999999999994,
+      "length": 9
+     },
+     {
+      "url": "https://www.bigcommerce.com/articles/ecommerce/ecommerce-platforms/",
+      "text": "9 best ecommerce platforms of 2026 (know your options)",
+      "cosine": 0.2357022603955158,
+      "length": 10
+     },
+     {
+      "url": "https://www.emailvendorselection.com/best-ecommerce-platforms-review/",
+      "text": "10 best ecommerce platforms in 2026 (reviewed, compared, and",
+      "cosine": 0.2357022603955158,
+      "length": 10
+     },
+     {
+      "url": "https://zapier.com/blog/best-ecommerce-shopping-cart-software/",
+      "text": "the 6 best ecommerce website building platforms in 2026",
+      "cosine": 0.2357022603955158,
+      "length": 10
+     },
+     {
+      "url": "https://www.rndc-usa.com/rndcs-ecommerce-platform-erndc-reaches-800-million-in-2023/",
+      "text": "rndc's ecommerce platform, erndc reaches $800 million in 2023",
+      "cosine": 0.2357022603955158,
+      "length": 10
+     },
+     {
+      "url": "https://www.shopify.com/blog/best-ecommerce-platforms",
+      "text": "11 best ecommerce platforms for your business in 2026",
+      "cosine": 0.2357022603955158,
+      "length": 10
+     },
+     {
+      "url": "https://www.unilogcorp.com/platform/ecommerce/",
+      "text": "cx1 ecommerce platforms: from first catalog to full scale",
+      "cosine": 0.2357022603955158,
+      "length": 10
+     },
+     {
+      "url": "https://www.reddit.com/r/ecommerce/comments/1n6s43r/which_ecommerce_platform_should_i_use_for_my/",
+      "text": "which e-commerce platform should i use for my online store?",
+      "cosine": 0.22360679774997896,
+      "length": 11
+     },
+     {
+      "url": "https://kibocommerce.com/",
+      "text": "kibo: unified commerce & oms platform for b2b and b2c",
+      "cosine": 0.22360679774997896,
+      "length": 11
+     },
+     {
+      "url": "https://community.shopify.com/t/can-an-old-database-be-integrated-with-an-ecommerce-platform/269622",
+      "text": "can an old database be integrated with an ecommerce platform?",
+      "cosine": 0.20412414523193148,
+      "length": 11
+     }
+    ],
+    "suggestions": [
+     {
+      "text": "what is ecommerce platform",
+      "type": "question",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "best ecommerce platform canada",
+      "type": "prepositions",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "cheapest ecommerce platform canada",
+      "type": "prepositions",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform for b2b",
+      "type": "prepositions",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform for business",
+      "type": "prepositions",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform in india",
+      "type": "prepositions",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform in nepal",
+      "type": "prepositions",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform in vietnam",
+      "type": "prepositions",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform without gst",
+      "type": "prepositions",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform market share",
+      "type": "comparisons",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform like shopify",
+      "type": "comparisons",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform like amazon",
+      "type": "comparisons",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform vs marketplace",
+      "type": "comparisons",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform vs website",
+      "type": "comparisons",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "what ecommerce platform is free",
+      "type": "question",
+      "cosine": 0.6324555320336759,
+      "length": 6
+     },
+     {
+      "text": "what ecommerce platform is best",
+      "type": "question",
+      "cosine": 0.6324555320336759,
+      "length": 6
+     },
+     {
+      "text": "what is atg ecommerce platform",
+      "type": "question",
+      "cosine": 0.6324555320336759,
+      "length": 6
+     },
+     {
+      "text": "which ecommerce platform is cheapest",
+      "type": "question",
+      "cosine": 0.6324555320336759,
+      "length": 6
+     },
+     {
+      "text": "ecommerce platform for small business",
+      "type": "prepositions",
+      "cosine": 0.6324555320336759,
+      "length": 6
+     },
+     {
+      "text": "which ecommerce platform is best",
+      "type": "prepositions",
+      "cosine": 0.6324555320336759,
+      "length": 6
+     },
+     {
+      "text": "ecommerce platform to sell products",
+      "type": "prepositions",
+      "cosine": 0.6324555320336759,
+      "length": 6
+     },
+     {
+      "text": "ecommerce platform vs online marketplace",
+      "type": "comparisons",
+      "cosine": 0.6324555320336759,
+      "length": 6
+     },
+     {
+      "text": "what ecommerce platform should i use",
+      "type": "question",
+      "cosine": 0.5773502691896258,
+      "length": 7
+     },
+     {
+      "text": "what is an ecommerce platform example",
+      "type": "question",
+      "cosine": 0.5773502691896258,
+      "length": 7
+     },
+     {
+      "text": "what is a headless ecommerce platform",
+      "type": "question",
+      "cosine": 0.5773502691896258,
+      "length": 7
+     },
+     {
+      "text": "what is a free ecommerce platform",
+      "type": "question",
+      "cosine": 0.5773502691896258,
+      "length": 7
+     },
+     {
+      "text": "what ecommerce platform does amazon use",
+      "type": "question",
+      "cosine": 0.5773502691896258,
+      "length": 7
+     },
+     {
+      "text": "what ecommerce platform does walmart use",
+      "type": "question",
+      "cosine": 0.5773502691896258,
+      "length": 7
+     },
+     {
+      "text": "what ecommerce platform does squarespace use",
+      "type": "question",
+      "cosine": 0.5773502691896258,
+      "length": 7
+     },
+     {
+      "text": "what ecommerce platform does nike use",
+      "type": "question",
+      "cosine": 0.5773502691896258,
+      "length": 7
+     }
+    ],
+    "related": [
+     {
+      "text": "best free ecommerce platform",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "the best ecommerce platform",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "best ecommerce platform 2022",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "white label ecommerce platform",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "best online ecommerce platform",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "multi store ecommerce platform",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "multi vendor ecommerce platform",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "multi channel ecommerce platform",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "open source ecommerce platform",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     },
+     {
+      "text": "multi tenant ecommerce platform",
+      "cosine": 0.7071067811865475,
+      "length": 5
+     }
+    ],
+    "searchVolume": 14800,
+    "monthlySearch": [
+     {
+      "month": 8,
+      "year": 2026,
+      "count": 8100
+     },
+     {
+      "month": 7,
+      "year": 2026,
+      "count": 12100
+     },
+     {
+      "month": 6,
+      "year": 2026,
+      "count": 12100
+     },
+     {
+      "month": 5,
+      "year": 2026,
+      "count": 12100
+     },
+     {
+      "month": 4,
+      "year": 2026,
+      "count": 9900
+     },
+     {
+      "month": 3,
+      "year": 2026,
+      "count": 12100
+     },
+     {
+      "month": 2,
+      "year": 2026,
+      "count": 12100
+     },
+     {
+      "month": 1,
+      "year": 2026,
+      "count": 27100
+     },
+     {
+      "month": 12,
+      "year": 2025,
+      "count": 22200
+     },
+     {
+      "month": 11,
+      "year": 2025,
+      "count": 22200
+     },
+     {
+      "month": 10,
+      "year": 2025,
+      "count": 22200
+     },
+     {
+      "month": 9,
+      "year": 2025,
+      "count": 22200
+     }
+    ]
+   },
+   "keyword_id": 224855
+  },
+  {
+   "value": {
+    "type": 0,
+    "topic": "headless ecommerce platform",
+    "subtopic": "headless",
+    "relevant": 82,
+    "headlines": [
+     {
+      "url": "https://spreecommerce.org/headless-ecommerce/",
+      "text": "open source headless ecommerce platform",
+      "cosine": 0.847213595499958
+     },
+     {
+      "url": "https://virtocommerce.com/b2b-headless-ecommerce-solution",
+      "text": "headless b2b ecommerce, built api-first",
+      "cosine": 0.847213595499958
+     },
+     {
+      "url": "https://www.redhat.com/architect/portfolio/detail/7-providing-a-headless-e-commerce-platform",
+      "text": "providing a headless e-commerce platform",
+      "cosine": 0.847213595499958
+     },
+     {
+      "url": "https://www.chargebee.com/blog/headless-ecommerce-platforms/",
+      "text": "best headless ecommerce platforms in 2024",
+      "cosine": 0.808248290463863
+     },
+     {
+      "url": "https://webkul.com/blog/top-5-open-source-headless-ecommerce/",
+      "text": "top 10 open source headless e-commerce platforms",
+      "cosine": 0.7779644730092272
+     },
+     {
+      "url": "https://www.bigcommerce.com/articles/headless-commerce/",
+      "text": "headless commerce in 2026 (everything you need to know)",
+      "cosine": 0.7333333333333334
+     },
+     {
+      "url": "https://www.reddit.com/r/nextjs/comments/1g0evc2/recommend_me_a_headless_cms_for_a_commerce_project/",
+      "text": "recommend me a headless cms for a commerce project",
+      "cosine": 0.7015113445777637
+     },
+     {
+      "url": "https://www.linkedin.com/pulse/running-ecommerce-platform-like-buying-sports-car-going-fox",
+      "text": "racing car platform vs ecommerce platform",
+      "weight": 1,
+      "cosine": 0.6123724356957945,
+      "length": 7
+     },
+     {
+      "url": "https://www.optimizely.com/optimization-glossary/ecommerce-platform",
+      "text": "defining an ecommerce platform",
+      "weight": 2,
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "url": "https://woocommerce.com/",
+      "text": "the most-trusted ecommerce platform",
+      "weight": 2,
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "url": "https://www.emporix.com/ecommerce-platform",
+      "text": "the emporix ecommerce platform",
+      "weight": 1,
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "url": "https://www.linkedin.com/pulse/running-ecommerce-platform-like-buying-sports-car-going-fox",
+      "text": "ecommerce platform seo considerations",
+      "weight": 1,
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "url": "https://www.emailvendorselection.com/best-ecommerce-platforms-review/",
+      "text": "best ecommerce platform for beginners",
+      "weight": 1,
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "url": "https://www.emailvendorselection.com/best-ecommerce-platforms-review/",
+      "text": "best ecommerce platform for developers",
+      "weight": 1,
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "url": "https://www.emailvendorselection.com/best-ecommerce-platforms-review/",
+      "text": "best ecommerce platform for startups",
+      "weight": 1,
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "url": "https://www.emailvendorselection.com/best-ecommerce-platforms-review/",
+      "text": "best ecommerce platform for dropshipping",
+      "weight": 1,
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "url": "https://www.emailvendorselection.com/best-ecommerce-platforms-review/",
+      "text": "best ecommerce platform for wordpress",
+      "weight": 1,
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "url": "https://vendure.io/",
+      "text": "vendure: b2b ecommerce platform for complex commerce",
+      "cosine": 0.4
+     }
+    ],
+    "suggestions": [
+     {
+      "text": "what is a headless ecommerce platform",
+      "type": "question",
+      "cosine": 0.7071067811865476,
+      "length": 7
+     },
+     {
+      "text": "what is ecommerce platform",
+      "type": "question",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "best ecommerce platform canada",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "cheapest ecommerce platform canada",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform for b2b",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform for business",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform in india",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform in nepal",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform in vietnam",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform without gst",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform market share",
+      "type": "comparisons",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform like shopify",
+      "type": "comparisons",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform like amazon",
+      "type": "comparisons",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform vs marketplace",
+      "type": "comparisons",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform vs website",
+      "type": "comparisons",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "what ecommerce platform is free",
+      "type": "question",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "what ecommerce platform is best",
+      "type": "question",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "what is atg ecommerce platform",
+      "type": "question",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "which ecommerce platform is cheapest",
+      "type": "question",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "ecommerce platform for small business",
+      "type": "prepositions",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "which ecommerce platform is best",
+      "type": "prepositions",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "ecommerce platform to sell products",
+      "type": "prepositions",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "ecommerce platform vs online marketplace",
+      "type": "comparisons",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "what ecommerce platform should i use",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     },
+     {
+      "text": "what is an ecommerce platform example",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     },
+     {
+      "text": "what is a free ecommerce platform",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     },
+     {
+      "text": "what ecommerce platform does amazon use",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     },
+     {
+      "text": "what ecommerce platform does walmart use",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     },
+     {
+      "text": "what ecommerce platform does squarespace use",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     },
+     {
+      "text": "what ecommerce platform does nike use",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     }
+    ],
+    "related": [
+     {
+      "text": "best free ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "the best ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "best ecommerce platform 2022",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "white label ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "best online ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "multi store ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "headless ecommerce open source",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "open source headless ecommerce",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "multi vendor ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "multi channel ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     }
+    ],
+    "searchVolume": 0,
+    "monthlySearch": []
+   },
+   "keyword_id": 224855
+  },
+  {
+   "value": {
+    "type": 0,
+    "topic": "wix ecommerce platform",
+    "subtopic": "wix",
+    "relevant": 82,
+    "headlines": [
+     {
+      "url": "https://dev.wix.com/docs/api-reference/business-solutions/e-commerce/get-started/headless/use-wix-e-com-from-any-platform",
+      "text": "wix headless developers: use wix ecommerce from any platform",
+      "cosine": 0.9
+     },
+     {
+      "url": "https://dev.wix.com/docs/api-reference/business-solutions/e-commerce/introduction",
+      "text": "about the wix ecommerce api",
+      "cosine": 0.847213595499958
+     },
+     {
+      "url": "https://www.prnewswire.com/news-releases/wix-launches-extended-ecommerce-solution-301085392.html",
+      "text": "wix launches extended ecommerce solution",
+      "cosine": 0.847213595499958
+     },
+     {
+      "url": "https://dev.wix.com/docs/api-reference/business-solutions/e-commerce/what-is-the-wix-e-commerce-platform",
+      "text": "what is the wix ecommerce platform?",
+      "cosine": 0.808248290463863
+     },
+     {
+      "url": "https://support.wix.com/en/article/wix-stores-importing-products-from-another-ecommerce-platform",
+      "text": "wix stores: importing products from another ecommerce platform",
+      "cosine": 0.7535533905932738
+     },
+     {
+      "url": "https://www.reddit.com/r/ecommerce/comments/13p8g3u/which_site_is_better_for_ecommerce_wix_or_shopify/",
+      "text": "which site is better for e-commerce? wix or shopify?",
+      "cosine": 0.7333333333333334
+     },
+     {
+      "url": "https://www.linkedin.com/pulse/running-ecommerce-platform-like-buying-sports-car-going-fox",
+      "text": "racing car platform vs ecommerce platform",
+      "weight": 1,
+      "cosine": 0.6123724356957945,
+      "length": 7
+     },
+     {
+      "url": "https://www.optimizely.com/optimization-glossary/ecommerce-platform",
+      "text": "defining an ecommerce platform",
+      "weight": 2,
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "url": "https://woocommerce.com/",
+      "text": "the most-trusted ecommerce platform",
+      "weight": 2,
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "url": "https://www.emporix.com/ecommerce-platform",
+      "text": "the emporix ecommerce platform",
+      "weight": 1,
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "url": "https://www.linkedin.com/pulse/running-ecommerce-platform-like-buying-sports-car-going-fox",
+      "text": "ecommerce platform seo considerations",
+      "weight": 1,
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "url": "https://www.emailvendorselection.com/best-ecommerce-platforms-review/",
+      "text": "best ecommerce platform for beginners",
+      "weight": 1,
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "url": "https://www.emailvendorselection.com/best-ecommerce-platforms-review/",
+      "text": "best ecommerce platform for developers",
+      "weight": 1,
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "url": "https://www.emailvendorselection.com/best-ecommerce-platforms-review/",
+      "text": "best ecommerce platform for startups",
+      "weight": 1,
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "url": "https://www.emailvendorselection.com/best-ecommerce-platforms-review/",
+      "text": "best ecommerce platform for dropshipping",
+      "weight": 1,
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "url": "https://www.emailvendorselection.com/best-ecommerce-platforms-review/",
+      "text": "best ecommerce platform for wordpress",
+      "weight": 1,
+      "cosine": 0.5163977794943222,
+      "length": 6
+     }
+    ],
+    "suggestions": [
+     {
+      "text": "what is ecommerce platform",
+      "type": "question",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "best ecommerce platform canada",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "cheapest ecommerce platform canada",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform for b2b",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform for business",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform in india",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform in nepal",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform in vietnam",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform without gst",
+      "type": "prepositions",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform market share",
+      "type": "comparisons",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform like shopify",
+      "type": "comparisons",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform like amazon",
+      "type": "comparisons",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform vs marketplace",
+      "type": "comparisons",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "ecommerce platform vs website",
+      "type": "comparisons",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "what ecommerce platform is free",
+      "type": "question",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "what ecommerce platform is best",
+      "type": "question",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "what is atg ecommerce platform",
+      "type": "question",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "which ecommerce platform is cheapest",
+      "type": "question",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "ecommerce platform for small business",
+      "type": "prepositions",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "which ecommerce platform is best",
+      "type": "prepositions",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "ecommerce platform to sell products",
+      "type": "prepositions",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "ecommerce platform vs online marketplace",
+      "type": "comparisons",
+      "cosine": 0.5163977794943222,
+      "length": 6
+     },
+     {
+      "text": "what ecommerce platform should i use",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     },
+     {
+      "text": "what is an ecommerce platform example",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     },
+     {
+      "text": "what is a headless ecommerce platform",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     },
+     {
+      "text": "what is a free ecommerce platform",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     },
+     {
+      "text": "what ecommerce platform does amazon use",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     },
+     {
+      "text": "what ecommerce platform does walmart use",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     },
+     {
+      "text": "what ecommerce platform does squarespace use",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     },
+     {
+      "text": "what ecommerce platform does nike use",
+      "type": "question",
+      "cosine": 0.47140452079103173,
+      "length": 7
+     }
+    ],
+    "related": [
+     {
+      "text": "best free ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "the best ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "best ecommerce platform 2022",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "white label ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "best online ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "multi store ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "multi vendor ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "multi channel ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "open source ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     },
+     {
+      "text": "multi tenant ecommerce platform",
+      "cosine": 0.5773502691896258,
+      "length": 5
+     }
+    ],
+    "searchVolume": 673000,
+    "monthlySearch": [
+     {
+      "month": 8,
+      "year": 2026,
+      "count": 550000
+     },
+     {
+      "month": 7,
+      "year": 2026,
+      "count": 550000
+     },
+     {
+      "month": 6,
+      "year": 2026,
+      "count": 550000
+     },
+     {
+      "month": 5,
+      "year": 2026,
+      "count": 673000
+     },
+     {
+      "month": 4,
+      "year": 2026,
+      "count": 823000
+     },
+     {
+      "month": 3,
+      "year": 2026,
+      "count": 823000
+     },
+     {
+      "month": 2,
+      "year": 2026,
+      "count": 673000
+     },
+     {
+      "month": 1,
+      "year": 2026,
+      "count": 673000
+     },
+     {
+      "month": 12,
+      "year": 2025,
+      "count": 673000
+     },
+     {
+      "month": 11,
+      "year": 2025,
+      "count": 673000
+     },
+     {
+      "month": 10,
+      "year": 2025,
+      "count": 673000
+     },
+     {
+      "month": 9,
+      "year": 2025,
+      "count": 673000
+     }
+    ]
+   },
+   "keyword_id": 224855
+  }
+ ]
+}

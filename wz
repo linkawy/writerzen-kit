@@ -1,0 +1,543 @@
+#!/usr/bin/env python3
+"""wz — WriterZen's three research tools from a shell, for people and for agents.
+
+WriterZen publishes no API. Its own front end talks to an ordinary JSON one, and this speaks to that
+one the same way the browser does, carrying a session the account owner exported. Everything here
+reads except `plan create`, which makes a project in your own workspace and spends your own keyword
+credits.
+
+Four environment variables configure it, and nothing else:
+
+    WZ_SESSION   the cookie file, mode 600      (default ~/.writerzen/session.txt)
+    WZ_OUT       where the raw JSON lands       (default ~/.writerzen/out)
+    WZ_LOC       default market for --loc       (default "United States")
+    WZ_LANG      default language for --lang    (default "en")
+
+Set the last two once for the market you actually work in, and stop typing them.
+
+Read SOP.md before the first run. `wz session check` tells you whether you are ready.
+
+Stdlib only, on purpose: this has to run inside whatever container an agent happens to live in,
+without a package install first.
+"""
+import argparse
+import http.cookiejar as cookiejar
+import json
+import os
+import stat
+import sys
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
+
+BASE = "https://app.writerzen.net"
+API = BASE + "/api/services"
+SESSION = os.environ.get("WZ_SESSION", os.path.expanduser("~/.writerzen/session.txt"))
+OUT = os.environ.get("WZ_OUT", os.path.expanduser("~/.writerzen/out"))
+LOC = os.environ.get("WZ_LOC", "United States")
+LANG = os.environ.get("WZ_LANG", "en")
+UA = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
+      "Chrome/141.0.0.0 Safari/537.36")
+
+
+class SessionDead(RuntimeError):
+    """The cookies no longer sign us in. Only the account owner can fix this — see SOP.md."""
+
+
+class Refused(RuntimeError):
+    """WriterZen answered, and said no."""
+
+
+# ── session ─────────────────────────────────────────────────────────────────────────────────────
+
+def _load_cookies(jar, path):
+    """Read `name=value` lines into the jar.
+
+    The only cookie that truly matters is `writerzen_session`; it is httpOnly, so a browser
+    extension will not export it and it has to come from DevTools. A session minted from the
+    long-lived `remember_web` cookie instead opens pages perfectly and then answers 500 to every
+    single API call — a miserable hour to spend, so we refuse it up front."""
+    try:
+        raw = open(path, encoding="utf-8").read()
+    except FileNotFoundError:
+        raise SessionDead("no session file at %s — see SOP.md, step 2" % path)
+    if os.name == "posix" and stat.S_IMODE(os.stat(path).st_mode) & 0o077:
+        sys.stderr.write("wz: %s is readable by others — chmod 600 it\n" % path)
+    for line in raw.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        name, value = line.split("=", 1)
+        jar.set_cookie(cookiejar.Cookie(
+            0, name.strip(), value.strip(), None, False,
+            "app.writerzen.net", True, False, "/", True, True,
+            None, False, None, None, {}))
+    names = {c.name for c in jar}
+    if "writerzen_session" not in names:
+        raise SessionDead(
+            "%s has no `writerzen_session` cookie. That one is httpOnly: copy it from the browser's "
+            "DevTools > Application > Cookies, not from a cookie-export extension. See SOP.md."
+            % path)
+    if "XSRF-TOKEN" not in names:
+        sys.stderr.write("wz: no XSRF-TOKEN in the session file; the first write may fail\n")
+
+
+class _NoLoginRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if "/login" in newurl:
+            raise SessionDead("WriterZen redirected us to the login page — the session has expired")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+class Client:
+    """One signed-in conversation with WriterZen."""
+
+    def __init__(self, path=SESSION, referer=BASE + "/"):
+        self.jar = cookiejar.CookieJar()
+        _load_cookies(self.jar, path)
+        self.opener = urllib.request.build_opener(
+            urllib.request.HTTPCookieProcessor(self.jar), _NoLoginRedirect())
+        self.referer = referer
+
+    def _token(self):
+        """The newest XSRF-TOKEN, decoded the way the header wants it.
+
+        Laravel rotates this on every response and stores it url-encoded, while the `X-XSRF-TOKEN`
+        header has to carry the decoded value. Reading it back from the jar on every call — rather
+        than pinning the one that came out of the file — is what stops the 419s."""
+        values = [c.value for c in self.jar if c.name == "XSRF-TOKEN"]
+        return urllib.parse.unquote(values[-1]) if values else ""
+
+    def call(self, method, path, params=None, body=None, timeout=180):
+        url = path if path.startswith("http") else API + path
+        if params:
+            url += "?" + urllib.parse.urlencode(params)
+        data = json.dumps(body, ensure_ascii=False).encode("utf-8") if body is not None else None
+        req = urllib.request.Request(url, data=data, method=method)
+        for header, value in (("Accept", "application/json"), ("User-Agent", UA),
+                              ("Origin", BASE), ("Referer", self.referer),
+                              ("X-Requested-With", "XMLHttpRequest"),
+                              ("X-XSRF-TOKEN", self._token())):
+            req.add_header(header, value)
+        if data is not None:
+            req.add_header("Content-Type", "application/json")
+        try:
+            with self.opener.open(req, timeout=timeout) as response:
+                payload = json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            text = e.read().decode("utf-8", "replace")[:300]
+            if e.code == 419:
+                raise SessionDead("419 Page Expired — the session or the CSRF token was refused")
+            if e.code in (401, 403):
+                raise SessionDead("HTTP %d — the session is no longer signed in" % e.code)
+            raise Refused("%s %s -> HTTP %d %s" % (method, url, e.code, text))
+        if isinstance(payload, dict) and payload.get("status") not in (None, 200):
+            raise Refused("%s %s -> %s" % (method, url, json.dumps(payload)[:300]))
+        return payload
+
+
+# ── the two code systems ────────────────────────────────────────────────────────────────────────
+
+def location(client, text):
+    """Resolve a place name to WriterZen's own row, preferring a whole country over a city in it."""
+    rows = client.call("GET", "/seo-core/google-geoid/search", {"q": text})["data"]
+    if not rows:
+        raise Refused("no location matches %r" % text)
+    exact = [r for r in rows if (r.get("canonical_name") or "").lower() == text.lower()]
+    country = [r for r in rows if (r.get("target_type") or "").lower() == "country"]
+    return (exact or country or rows)[0]
+
+
+def language(client, code):
+    rows = client.call("GET", "/seo-core/google-languageid/get")["data"]
+    for row in rows:
+        if (row.get("language_code") or "").lower() == code.lower():
+            return row
+    raise Refused("no language with code %r" % code)
+
+
+def ids(loc, lang, service):
+    """Pick which of the two id systems this service speaks.
+
+    Keyword Explorer wants Google's own advertising constants (`criteria_id`); Topic Discovery and
+    Keyword Planner want WriterZen's row ids (`id`). They are nothing alike: the United States is
+    2840 to one service and 235239 to the other, and English is "1000" to one and 2 to the other.
+    Handing a service the wrong system's numbers is the commonest way to get a 500 out of this API,
+    so the choice is made here once and never again at a call site."""
+    if service == "explorer":
+        return int(loc["criteria_id"]), str(lang["criteria_id"])
+    return int(loc["id"]), int(lang["id"])
+
+
+# ── plumbing ────────────────────────────────────────────────────────────────────────────────────
+
+def save(name, payload):
+    os.makedirs(OUT, exist_ok=True)
+    path = os.path.join(OUT, name)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False)
+    return path
+
+
+def wait_for(fetch, ready, label, tries=90, every=5):
+    """Poll until the server has finished.
+
+    Progress goes to stderr so a piped stdout stays clean, and it redraws one line on a terminal
+    while staying silent in a log — an agent's transcript should not fill up with a countdown."""
+    live = sys.stderr.isatty()
+    for attempt in range(tries):
+        payload = fetch()
+        if ready(payload):
+            if live:
+                sys.stderr.write("\r%s\r" % (" " * 60))
+            return payload
+        if live:
+            sys.stderr.write("\rwz: %s ... %ds" % (label, attempt * every))
+            sys.stderr.flush()
+        time.sleep(every)
+    raise Refused("%s did not finish after %d seconds" % (label, tries * every))
+
+
+def xlsx(path, rows, sheet="Sheet1"):
+    """A spreadsheet, because CSV turns non-Latin text into rubble in Excel and this has to read."""
+    import zipfile
+
+    def esc(value):
+        return str(value).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+    def ref(row, col):
+        name, n = "", col + 1
+        while n:
+            n, remainder = divmod(n - 1, 26)
+            name = chr(65 + remainder) + name
+        return "%s%d" % (name, row + 1)
+
+    def cell(row, col, value):
+        if value is None:
+            value = ""
+        if isinstance(value, bool):
+            value = str(value)
+        if isinstance(value, (int, float)):
+            return '<c r="%s"><v>%s</v></c>' % (ref(row, col), value)
+        return ('<c r="%s" t="inlineStr"><is><t xml:space="preserve">%s</t></is></c>'
+                % (ref(row, col), esc(value)))
+
+    body = "".join('<row r="%d">%s</row>' % (i + 1, "".join(cell(i, j, v) for j, v in enumerate(r)))
+                   for i, r in enumerate(rows))
+    ns = "http://schemas.openxmlformats.org"
+    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("[Content_Types].xml",
+                   '<?xml version="1.0" encoding="UTF-8"?>'
+                   '<Types xmlns="%s/package/2006/content-types">'
+                   '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.'
+                   'relationships+xml"/>'
+                   '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.'
+                   'openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'
+                   '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.'
+                   'openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>' % ns)
+        z.writestr("_rels/.rels",
+                   '<?xml version="1.0" encoding="UTF-8"?>'
+                   '<Relationships xmlns="%s/package/2006/relationships"><Relationship Id="rId1" '
+                   'Type="%s/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"'
+                   '/></Relationships>' % (ns, ns))
+        z.writestr("xl/workbook.xml",
+                   '<?xml version="1.0" encoding="UTF-8"?>'
+                   '<workbook xmlns="%s/spreadsheetml/2006/main" xmlns:r="%s/officeDocument/2006/'
+                   'relationships"><sheets><sheet name="%s" sheetId="1" r:id="rId1"/></sheets>'
+                   '</workbook>' % (ns, ns, esc(sheet)[:31]))
+        z.writestr("xl/_rels/workbook.xml.rels",
+                   '<?xml version="1.0" encoding="UTF-8"?>'
+                   '<Relationships xmlns="%s/package/2006/relationships"><Relationship Id="rId1" '
+                   'Type="%s/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"'
+                   '/></Relationships>' % (ns, ns))
+        z.writestr("xl/worksheets/sheet1.xml",
+                   '<?xml version="1.0" encoding="UTF-8"?>'
+                   '<worksheet xmlns="%s/spreadsheetml/2006/main"><sheetData>%s</sheetData>'
+                   '</worksheet>' % (ns, body))
+    return path
+
+
+def emit(args, rows, header, sheet):
+    """Print a table, and write the spreadsheet too when one was asked for."""
+    widths = [max(len(str(r[i])) for r in [header] + rows) for i in range(len(header))]
+    for row in [header] + rows:
+        print("  ".join(str(v).ljust(widths[i]) for i, v in enumerate(row)))
+    if args.xlsx:
+        print("\n%s" % xlsx(args.xlsx, [header] + rows, sheet))
+
+
+# ── keyword explorer ────────────────────────────────────────────────────────────────────────────
+
+def cmd_kw(args):
+    client = Client(referer=BASE + "/keyword-explorer")
+    loc, lang = location(client, args.loc), language(client, args.lang)
+    location_id, language_id = ids(loc, lang, "explorer")
+    sys.stderr.write("wz: %s / %s\n" % (loc["canonical_name"], lang["name"]))
+    task = client.call("POST", "/keyword-explorer/v2/task",
+                       body={"input": args.keyword, "type": "keyword",
+                             "location_id": location_id, "language_id": language_id})
+    task_id = task["data"]["id"]
+    payload = wait_for(
+        lambda: client.call("GET", "/keyword-explorer/v2/task/get-data", {"id": task_id}),
+        lambda p: (p.get("data") or {}).get("ideas"),
+        "keyword explorer %d" % task_id)
+    path = save("kw-%d.json" % task_id, payload)
+    ideas = payload["data"]["ideas"]
+    ideas.sort(key=lambda i: i.get("search_volume") or 0, reverse=True)
+    print("task %d · %d ideas · %s" % (task_id, len(ideas), path))
+    rows = [[i.get("keyword"), i.get("search_volume") or 0, i.get("average_cpc") or 0,
+             i.get("competition") or 0] for i in ideas[:args.top]]
+    emit(args, rows, ["keyword", "volume", "cpc (raw)", "competition"], "keywords")
+    # Measured on three keywords that appear in both tools: this column runs a consistent ~23,000x
+    # the dollar figure the Keyword Planner reports for the same keyword. Whatever unit that is, it
+    # is not the Planner's, so the two must never be put in one table.
+    print("\ncpc here is in WriterZen's own unit, ~23,000x the dollars `wz plan` reports for the "
+          "same keyword. Rank by it; do not read it as money or compare it across tools.")
+
+
+# ── topic discovery ─────────────────────────────────────────────────────────────────────────────
+
+def distil(payload):
+    """Keep the headlines and the related phrases; drop the analysis sitting on top of them.
+
+    In a language it does not handle well, WriterZen's topic ranking splits the phrase into
+    fragments and reports each fragment's own search volume as a topic's — which is how a business
+    in an unrelated industry ends up listed as a top topic — and its relevance score does not
+    discriminate (40 of 100 topics scoring an identical 87). What sits underneath is excellent and
+    comes from nowhere else: the real page titles that rank, their URLs, and the phrases around
+    them. So the default output is that, and `--raw` is there for anyone who wants to argue."""
+    topics = ((payload.get("data") or {}).get("root_keyword") or {}).get("topics") or []
+    headlines, phrases = {}, {}
+    for entry in topics:
+        value = entry.get("value") or {}
+        for h in value.get("headlines") or []:
+            if h.get("text"):
+                headlines.setdefault(h["text"], (h.get("url"), h.get("cosine") or 0))
+        for p in (value.get("related") or []) + (value.get("suggestions") or []):
+            if p.get("text"):
+                phrases[p["text"]] = max(phrases.get(p["text"], 0), p.get("cosine") or 0)
+    return (sorted(([t] + list(v) for t, v in headlines.items()), key=lambda r: -r[2]),
+            sorted(([t, c] for t, c in phrases.items()), key=lambda r: -r[1]))
+
+
+def cmd_topic(args):
+    client = Client(referer=BASE + "/topic-discovery")
+    loc, lang = location(client, args.loc), language(client, args.lang)
+    location_id, language_id = ids(loc, lang, "topic")
+    sys.stderr.write("wz: %s / %s\n" % (loc["canonical_name"], lang["name"]))
+    # This one takes `keyword`, where Keyword Explorer next door takes `input`. Send `input` here
+    # and the answer is a bare 500 that says nothing about which field was wrong.
+    task = client.call("POST", "/topic-research/v1/tasks",
+                       body={"keyword": args.keyword, "location_id": location_id,
+                             "language_id": language_id})
+    task_id = task["data"]["id"]
+    payload = wait_for(
+        lambda: client.call("GET", "/topic-research/v1/tasks/%d" % task_id),
+        lambda p: ((p.get("data") or {}).get("root_keyword") or {}).get("topics"),
+        "topic discovery %d" % task_id)
+    path = save("topic-%d.json" % task_id, payload)
+    headlines, phrases = distil(payload)
+    print("task %d · %d headlines · %d related phrases · %s"
+          % (task_id, len(headlines), len(phrases), path))
+    if args.raw:
+        return
+    rows = [[h[0][:70], h[1], round(h[2], 3)] for h in headlines[:args.top]]
+    emit(args, rows, ["headline", "url", "closeness"], "headlines")
+    print()
+    for text, cosine in phrases[:args.top]:
+        print("  %-60s %.3f" % (text[:60], cosine))
+
+
+# ── keyword planner ─────────────────────────────────────────────────────────────────────────────
+
+def read_plan(client, task_id):
+    """Clusters hang off a level, not off the project — see SOP.md for why that matters."""
+    levels = client.call("GET", "/keyword-clustering/v1/tasks/%d/levels" % task_id)["data"]
+    if not levels:
+        raise Refused("project %d has no clustering level yet" % task_id)
+    level = levels[0]
+    clusters = []
+    for page in range(1, (level.get("clusters_page") or 1) + 1):
+        clusters += client.call("GET", "/keyword-clustering/v1/clusters/get-by-level",
+                                {"level_id": level["id"], "page": page})["data"]
+    orphans = []
+    for page in range(1, (level.get("not_in_any_cluster_page") or 1) + 1):
+        orphans += client.call("GET",
+                               "/keyword-clustering/v1/clusters/get-not-in-any-cluster-by-level",
+                               {"level_id": level["id"], "page": page})["data"]
+    return level, clusters, orphans
+
+
+def show_plan(args, task_id, level, clusters, orphans):
+    path = save("plan-%d.json" % task_id,
+                {"level": level, "clusters": clusters, "orphans": orphans})
+    print("project %d · level %s (%s shared URLs) · %d clusters · %d unclustered · %s"
+          % (task_id, level["id"], level["level"], len(clusters), len(orphans), path))
+    rows = []
+    for cluster in clusters:
+        for item in cluster.get("items") or []:
+            rows.append([cluster["name"], item.get("keyword"), item.get("search_volume") or 0,
+                         item.get("average_cpc") or 0, item.get("competition") or 0,
+                         item.get("intent") or "", cluster.get("buying_journey") or ""])
+    for item in orphans:
+        rows.append(["(unclustered)", item.get("keyword"), item.get("search_volume") or 0,
+                     item.get("average_cpc") or 0, item.get("competition") or 0,
+                     item.get("intent") or "", ""])
+    emit(args, rows, ["cluster", "keyword", "volume", "cpc", "competition", "intent", "journey"],
+         "clusters")
+    print("\nallintitle and KGR are left out of this table: outside English they come back 0 and "
+          "~1.0 for every keyword, which reads as a finding and is not one.")
+
+
+def cmd_plan_create(args):
+    client = Client(referer=BASE + "/user/keyword-planner")
+    words = [w.strip() for w in
+             (open(args.file, encoding="utf-8").read().splitlines() if args.file else args.keywords)
+             if w.strip()]
+    if not words:
+        raise Refused("no keywords given")
+    loc, lang = location(client, args.loc), language(client, args.lang)
+    location_id, language_id = ids(loc, lang, "planner")
+    sys.stderr.write("wz: %d keywords · %s / %s · level %d\n"
+                     % (len(words), loc["canonical_name"], lang["name"], args.level))
+    # The full location and language objects have to travel beside their own ids. Sending the ids
+    # alone is answered with a bare 500 and no explanation.
+    task = client.call("POST", "/keyword-clustering/v1/tasks", body={
+        "name": args.name, "keywords": words,
+        "location": {"id": loc["id"], "canonical_name": loc["canonical_name"],
+                     "country_code": loc["country_code"]},
+        "language": {"id": lang["id"], "name": lang["name"],
+                     "language_code": lang["language_code"]},
+        "location_id": location_id, "language_id": language_id,
+        "level": args.level, "enable_cluster": True,
+        "enable_allintitle": bool(args.allintitle)})
+    task_id = task["data"]["id"]
+    wait_for(lambda: client.call("GET", "/keyword-clustering/v1/tasks/%d" % task_id),
+             lambda p: p["data"].get("status_cluster") == 1,
+             "clustering project %d" % task_id)
+    show_plan(args, task_id, *read_plan(client, task_id))
+
+
+def cmd_plan_read(args):
+    client = Client(referer=BASE + "/user/keyword-planner")
+    show_plan(args, args.id, *read_plan(client, args.id))
+
+
+def cmd_plan_matrix(args):
+    """How many of each pair's top ten results are the same page.
+
+    WriterZen groups keywords by this overlap but never shows it, so a cluster has to be taken on
+    faith. Printed, it turns into something you can argue with: a keyword sitting on the boundary
+    shows up as a row that matches both groups about equally."""
+    client = Client(referer=BASE + "/user/keyword-planner")
+    _, clusters, orphans = read_plan(client, args.id)
+    rows = []
+    for index, cluster in enumerate(clusters):
+        for item in cluster.get("items") or []:
+            rows.append((chr(65 + index), item))
+    rows += [("-", item) for item in orphans]
+    urls = [set(item.get("urls") or []) for _, item in rows]
+    width = max(len(item.get("keyword") or "") for _, item in rows)
+    print(" " * (width + 5) + " ".join("%3d" % (i + 1) for i in range(len(rows))))
+    for i, (group, item) in enumerate(rows):
+        cells = " ".join("%3d" % len(urls[i] & urls[j]) for j in range(len(rows)))
+        print("%3d. %-*s %s  %s" % (i + 1, width, item.get("keyword"), cells, group))
+    print("\nEach number is shared URLs out of ten. Inside a cluster it should clearly beat the "
+          "numbers across clusters; where it does not, the grouping is a coin toss.")
+
+
+# ── account ─────────────────────────────────────────────────────────────────────────────────────
+
+def usage(client):
+    return client.call("GET", "/r-cms/usage/workspace")["data"]
+
+
+def cmd_session_check(args):
+    client = Client()
+    modules = usage(client)
+    print("session alive · %d modules reported" % len(modules))
+    for module in modules:
+        if module.get("module") == "keyword_value":
+            print("keyword credits: %s of %s left" % (module.get("available"), module.get("limit")))
+
+
+def cmd_limits(args):
+    client = Client()
+    rows = [[m.get("module"), m.get("type"),
+             "unlimited" if m.get("limit") == -1 else m.get("limit"),
+             m.get("usage"), "unlimited" if m.get("limit") == -1 else m.get("available")]
+            for m in usage(client)]
+    emit(args, rows, ["module", "period", "limit", "used", "left"], "limits")
+
+
+# ── cli ─────────────────────────────────────────────────────────────────────────────────────────
+
+def main():
+    parser = argparse.ArgumentParser(prog="wz", description=__doc__.splitlines()[0],
+                                     formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     epilog="Read SOP.md before the first run.")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    # `--xlsx` belongs to each subcommand rather than to `wz` itself, so that it can be typed where
+    # anyone would naturally type it: at the end of the line, after the thing it applies to.
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument("--xlsx", metavar="FILE", help="also write the table as a spreadsheet")
+
+    def place(p):
+        p.add_argument("--loc", default=LOC, help="country or city name (default: $WZ_LOC)")
+        p.add_argument("--lang", default=LANG, help="language code, e.g. en (default: $WZ_LANG)")
+        p.add_argument("--top", type=int, default=25, help="rows to print")
+
+    session = subparsers.add_parser("session", help="is this machine signed in").add_subparsers(
+        dest="action", required=True)
+    session.add_parser("check").set_defaults(func=cmd_session_check)
+
+    subparsers.add_parser("limits", parents=[common], help="what the account has left").set_defaults(func=cmd_limits)
+
+    kw = subparsers.add_parser("kw", parents=[common], help="Keyword Explorer: volumes for one seed keyword")
+    kw.add_argument("keyword")
+    place(kw)
+    kw.set_defaults(func=cmd_kw)
+
+    topic = subparsers.add_parser("topic", parents=[common], help="Topic Discovery: the headlines that rank")
+    topic.add_argument("keyword")
+    topic.add_argument("--raw", action="store_true", help="save the whole payload, print nothing")
+    place(topic)
+    topic.set_defaults(func=cmd_topic)
+
+    plan = subparsers.add_parser("plan", help="Keyword Planner: cluster keywords by their SERPs")
+    actions = plan.add_subparsers(dest="action", required=True)
+
+    create = actions.add_parser("create", parents=[common], help="make a project and wait for it (spends credits)")
+    create.add_argument("--name", required=True)
+    create.add_argument("--file", help="one keyword per line")
+    create.add_argument("--keywords", nargs="*", default=[])
+    create.add_argument("--level", type=int, default=3, help="shared URLs needed to group two words")
+    create.add_argument("--allintitle", action="store_true",
+                        help="ask for allintitle too; it comes back 0 outside English")
+    place(create)
+    create.set_defaults(func=cmd_plan_create)
+
+    read = actions.add_parser("read", parents=[common], help="read an existing project")
+    read.add_argument("id", type=int)
+    read.set_defaults(func=cmd_plan_read)
+
+    matrix = actions.add_parser("matrix", help="shared-URL overlap between every pair of keywords")
+    matrix.add_argument("id", type=int)
+    matrix.set_defaults(func=cmd_plan_matrix)
+
+    args = parser.parse_args()
+    try:
+        args.func(args)
+    except SessionDead as e:
+        sys.stderr.write("\nwz: %s\n     Only the account owner can refresh the session.\n" % e)
+        return 2
+    except Refused as e:
+        sys.stderr.write("\nwz: %s\n" % e)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
