@@ -1,19 +1,602 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>دليل WriterZen</title>
-<meta http-equiv="refresh" content="0; url=./ar/">
-<link rel="canonical" href="./ar/">
+<title>WriterZen Guide</title>
+<meta name="description" content="How we reached WriterZen's three research tools without a public API, what you need to run them, and the prompts to start with.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-  body{margin:0; min-height:100vh; display:grid; place-items:center;
-       background:#FAF8F6; color:#45474B; font-family:system-ui,sans-serif; padding:24px;}
-  a{color:#A8431A;}
-  @media (prefers-color-scheme: dark){ body{background:#17181A; color:#C5C2BD;} a{color:#F8A279;} }
+  :root{
+    --paper:#FAF8F6; --surface:#FFFFFF; --sunk:#F0ECE7;
+    --ink:#17181A; --body:#45474B; --muted:#7A7B80;
+    --line:#E4E0DA; --line-soft:#EFEBE5;
+    --accent:#DF5F26; --accent-soft:#FCEDE4; --accent-ink:#A8431A; --on-accent:#FFFFFF;
+    --warn:#9A2F2A; --warn-soft:#F8E4E0;
+    --code-bg:#1E1F22; --code-ink:#E6E2DC; --code-dim:#8E8A83;
+    --prompt-bg:#F5F1EC; --prompt-line:#DFD9D1;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#17181A; --surface:#202124; --sunk:#131416;
+      --ink:#F1EFEC; --body:#C5C2BD; --muted:#8D8A85;
+      --line:#323336; --line-soft:#26272A;
+      --accent:#F07A45; --accent-soft:#33211A; --accent-ink:#F8A279; --on-accent:#17181A;
+      --warn:#E89086; --warn-soft:#331E1B;
+      --code-bg:#131416; --code-ink:#DEDAD4; --code-dim:#83807A;
+      --prompt-bg:#1E1F22; --prompt-line:#343538;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#17181A; --surface:#202124; --sunk:#131416;
+    --ink:#F1EFEC; --body:#C5C2BD; --muted:#8D8A85;
+    --line:#323336; --line-soft:#26272A;
+    --accent:#F07A45; --accent-soft:#33211A; --accent-ink:#F8A279; --on-accent:#17181A;
+    --warn:#E89086; --warn-soft:#331E1B;
+    --code-bg:#131416; --code-ink:#DEDAD4; --code-dim:#83807A;
+    --prompt-bg:#1E1F22; --prompt-line:#343538;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--body);
+       font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+       font-size:17px; line-height:1.75; padding-inline:20px;
+       -webkit-text-size-adjust:100%;}
+  .wrap{max-width:830px; margin-inline:auto; padding-block:0 90px;}
+  h1,h2,h3{font-family:"Readex Pro","IBM Plex Sans",sans-serif; color:var(--ink);
+           text-wrap:balance; margin:0; line-height:1.3; font-weight:500;}
+  h1{font-size:clamp(32px,7vw,46px); letter-spacing:-.015em;}
+  h2{font-size:clamp(24px,5vw,31px);}
+  h3{font-size:19px; font-weight:600;}
+  p{margin:0;}
+  strong{color:var(--ink); font-weight:600;}
+  a{color:var(--accent-ink);}
+  code{font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:.88em;
+       background:var(--sunk); color:var(--ink); padding:.12em .4em; border-radius:5px;}
+
+  nav{position:sticky; top:0; z-index:9;
+      background:var(--paper); border-bottom:1px solid var(--line);
+      margin-inline:-20px; padding:11px 20px;
+      display:flex; gap:7px; overflow-x:auto; scrollbar-width:none; align-items:center;}
+  nav::-webkit-scrollbar{display:none;}
+  nav a{flex:none; text-decoration:none; font-size:14.5px; font-weight:600; color:var(--muted);
+        padding:6px 14px; border-radius:99px; white-space:nowrap;}
+  nav a:hover{color:var(--accent-ink); background:var(--accent-soft);}
+  nav a:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  nav .lang{margin-inline-start:auto; color:var(--accent-ink); border:1px solid var(--line);}
+  nav .lang:hover{border-color:var(--accent);}
+
+  header.top{display:flex; flex-direction:column; gap:16px; padding-block:56px 20px;}
+  .eyebrow{font-size:13px; letter-spacing:.16em; text-transform:uppercase; color:var(--accent);
+           font-weight:600;}
+  .lede{font-size:21px; line-height:1.6;}
+
+  section{padding-block:48px; border-top:1px solid var(--line);
+          display:flex; flex-direction:column; gap:22px; scroll-margin-top:66px;}
+  .sec-head{display:flex; flex-direction:column; gap:8px;}
+  .kicker{font-size:14px; font-weight:600; color:var(--accent); letter-spacing:.04em;}
+  .cap{font-size:15px; color:var(--muted);}
+
+  .flow{display:flex; flex-direction:column; gap:14px;}
+  .flow-row{background:var(--surface); border:1px solid var(--line); border-radius:12px;
+            padding:20px 22px; display:flex; flex-direction:column; gap:14px;}
+  .flow-row.us{border-color:var(--accent); background:var(--accent-soft);}
+  .flow-label{font-size:14px; font-weight:600; color:var(--muted); letter-spacing:.03em;}
+  .flow-row.us .flow-label{color:var(--accent-ink);}
+  .nodes{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+  .node{background:var(--paper); border:1px solid var(--line); border-radius:9px;
+        padding:11px 16px; font-size:15px; color:var(--ink); font-weight:600;}
+  .flow-row.us .node{background:var(--surface); border-color:var(--accent);}
+  .node.api{font-family:"IBM Plex Mono",monospace; font-size:13.5px; font-weight:500;
+            color:var(--body);}
+  .arrow{color:var(--accent); font-size:22px; line-height:1; flex:none;}
+  .facts{display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:18px;}
+  .fact{display:flex; flex-direction:column; gap:7px; padding-top:15px;
+        border-top:2px solid var(--accent);}
+  .fact b{color:var(--ink); font-weight:600; font-size:17px;}
+  .fact span{font-size:15.5px; line-height:1.65;}
+
+  .assets{border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--surface);}
+  .asset{display:grid; grid-template-columns:24px 1fr; gap:15px; padding:18px 20px;
+         border-bottom:1px solid var(--line-soft);}
+  .asset:last-child{border-bottom:0;}
+  .box{width:18px; height:18px; border:2px solid var(--accent); border-radius:5px; margin-top:7px;}
+  .asset.no{background:var(--warn-soft);}
+  .asset.no .box{border-color:var(--warn); border-style:dashed;}
+  .asset-b{display:flex; flex-direction:column; gap:5px;}
+  .asset-b b{color:var(--ink); font-weight:600; font-size:17.5px;}
+  .asset-b span{font-size:16px; line-height:1.7;}
+  .asset.no b,.asset.no strong{color:var(--warn);}
+
+  .stepwrap{display:flex; flex-direction:column; gap:34px;}
+  .step{display:flex; flex-direction:column; gap:15px;}
+  .step-head{display:flex; align-items:center; gap:14px;}
+  .step-num{flex:none; width:34px; height:34px; border-radius:50%; background:var(--accent);
+            color:var(--on-accent); display:grid; place-items:center; font-size:15px;
+            font-weight:600; font-family:"IBM Plex Mono",monospace;}
+  .substeps{margin:0; padding-inline-start:24px; display:flex; flex-direction:column; gap:9px;}
+  .substeps li::marker{color:var(--accent); font-weight:600;}
+
+  pre{margin:0; background:var(--code-bg); color:var(--code-ink); border-radius:10px;
+      padding:18px 20px; overflow-x:auto;
+      font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:15px; line-height:1.7;}
+  pre .c{color:var(--code-dim);}
+
+  .loop{border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--surface);}
+  .loop-row{display:grid; grid-template-columns:32px 1fr auto; gap:14px; align-items:baseline;
+            padding:14px 20px; border-bottom:1px solid var(--line-soft);}
+  .loop-row:last-child{border-bottom:0;}
+  .loop-n{font-family:"IBM Plex Mono",monospace; font-size:14px; color:var(--muted);
+          font-variant-numeric:tabular-nums;}
+  .loop-what{display:flex; flex-direction:column; gap:3px;}
+  .loop-what b{color:var(--ink); font-weight:600; font-size:16.5px;}
+  .loop-what span{font-family:"IBM Plex Mono",monospace; font-size:13.5px; color:var(--muted);}
+  .chip{font-size:12.5px; font-weight:600; padding:4px 11px; border-radius:99px; white-space:nowrap;}
+  .chip.free{background:var(--sunk); color:var(--muted);}
+  .chip.cost{background:var(--accent-soft); color:var(--accent-ink);}
+  .chip.you{background:transparent; color:var(--muted); box-shadow:inset 0 0 0 1px var(--line);}
+
+  .scroll{overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--surface);}
+  table{border-collapse:collapse; width:100%; font-size:15px;}
+  th,td{padding:10px 14px; text-align:left; border-bottom:1px solid var(--line-soft);}
+  thead th{font-size:13px; color:var(--muted); font-weight:600; background:var(--sunk);
+           white-space:nowrap;}
+  tbody tr:last-child td{border-bottom:0;}
+  td.num{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; color:var(--ink);}
+  td.kw{font-family:"IBM Plex Mono",monospace; font-size:14px;}
+  .tag-cl{color:var(--accent-ink); font-weight:600;}
+  .tag-none{color:var(--muted);}
+
+  .matrix table{font-family:"IBM Plex Mono",monospace; font-size:13.5px;}
+  .matrix th,.matrix td{text-align:center; padding:8px 9px;}
+  .matrix th.lbl{text-align:left; white-space:nowrap; color:var(--body); background:var(--surface);
+                 font-weight:400; font-size:13.5px;}
+  .matrix td{font-variant-numeric:tabular-nums; color:var(--muted);}
+  .matrix td.hi{background:var(--accent-soft); color:var(--accent-ink); font-weight:600;}
+  .matrix td.self{color:var(--muted); background:var(--sunk);}
+  .matrix td.grp{font-weight:600; color:var(--ink);}
+
+  .prompts{display:flex; flex-direction:column; gap:22px;}
+  .prompt{border:1px solid var(--prompt-line); border-radius:12px; background:var(--prompt-bg);
+          overflow:hidden;}
+  .p-head{display:flex; align-items:center; justify-content:space-between; gap:14px;
+          padding:14px 18px; border-bottom:1px solid var(--prompt-line);}
+  .p-title{display:flex; align-items:baseline; gap:11px; flex-wrap:wrap;}
+  .p-n{font-family:"Readex Pro",monospace; font-size:14px; color:var(--accent); font-weight:600;}
+  .p-title b{color:var(--ink); font-weight:600; font-size:17px;}
+  .p-title span{font-size:13.5px; color:var(--muted);}
+  .copy{flex:none; font-family:inherit; font-size:14px; font-weight:600; cursor:pointer;
+        border:1.5px solid var(--accent); background:transparent; color:var(--accent-ink);
+        padding:7px 16px; border-radius:99px; transition:background .15s, color .15s;}
+  .copy:hover{background:var(--accent-soft);}
+  .copy.done{background:var(--accent); color:var(--on-accent);}
+  .copy:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .p-body{padding:18px 20px; font-size:16px; line-height:1.75; white-space:pre-wrap;
+          color:var(--body);}
+  .p-note{padding:0 20px 16px; font-size:14.5px; color:var(--muted);}
+
+  .note{background:var(--accent-soft); border-radius:12px; padding:24px 26px;
+        display:flex; flex-direction:column; gap:10px;}
+  .note p,.note strong{color:var(--accent-ink);}
+  .stop{border:1.5px solid var(--warn); background:var(--warn-soft); border-radius:12px;
+        padding:24px 26px; display:flex; flex-direction:column; gap:14px;}
+  .stop h3,.stop strong{color:var(--warn);}
+  .stop ul{margin:0; padding-inline-start:22px; display:flex; flex-direction:column; gap:11px;}
+  .stop li::marker{color:var(--warn);}
+
+  .rules{display:flex; flex-direction:column; gap:18px;}
+  .foot{padding-top:24px; border-top:1px solid var(--line); font-size:15px; color:var(--muted);}
+  @media (max-width:520px){
+    body{font-size:16px;}
+    header.top{padding-block:40px 16px;}
+    section{padding-block:38px;}
+    .loop-row{grid-template-columns:26px 1fr; row-gap:6px;}
+    .chip{grid-column:2;}
+  }
 </style>
 </head>
 <body>
-  <p>جاري التحويل إلى <a href="./ar/">دليل WriterZen</a>…</p>
+
+<nav>
+  <a href="#how">How it works</a>
+  <a href="#assets">What you need</a>
+  <a href="#install">Setup</a>
+  <a href="#loop">The loop</a>
+  <a href="#prompts">Prompts</a>
+  <a href="#never">Warnings</a>
+  <a class="lang" href="./ar/" lang="ar">العربية</a>
+</nav>
+
+<div class="wrap">
+
+  <header class="top">
+    <div class="eyebrow">wz · WriterZen</div>
+    <h1>WriterZen Guide</h1>
+    <p class="lede">How three SEO tools with no public API ended up running from a shell, what you need to run them yourself, and how to get from one seed keyword to a page plan.</p>
+    <p class="cap">Setup takes about fifteen minutes. After that you only come back to the first three sections when a session expires.</p>
+  </header>
+
+  <!-- ══ 1 ══ -->
+  <section id="how">
+    <div class="sec-head">
+      <span class="kicker">The idea</span>
+      <h2>How this works without an API</h2>
+      <p class="cap">WriterZen publishes no API. But it uses one itself.</p>
+    </div>
+
+    <div class="flow">
+      <div class="flow-row">
+        <div class="flow-label">What happens when you open the site</div>
+        <div class="nodes">
+          <div class="node">Your browser</div>
+          <div class="arrow">→</div>
+          <div class="node api">app.writerzen.net/api/services/…</div>
+        </div>
+      </div>
+      <div class="flow-row us">
+        <div class="flow-label">What we did</div>
+        <div class="nodes">
+          <div class="node">wz on a server</div>
+          <div class="arrow">→</div>
+          <div class="node api">the very same endpoints</div>
+        </div>
+      </div>
+    </div>
+
+    <p>WriterZen's own front end does nothing magical — it sends ordinary JSON requests to their server and renders what comes back. <strong>We send those same requests</strong>, and identify ourselves the way the browser does: with the session cookie.</p>
+
+    <div class="facts">
+      <div class="fact">
+        <b>The session is the key</b>
+        <span>No API key, no long-lived token. You sign in from your browser and hand the tool the same cookie — it becomes you.</span>
+      </div>
+      <div class="fact">
+        <b>The paths came from their code</b>
+        <span>We downloaded the front end's JavaScript bundle and read every endpoint and field out of it. Nothing was guessed.</span>
+      </div>
+      <div class="fact">
+        <b>Your account, at human pace</b>
+        <span>Your subscription and your data. The tool reads and waits like any other user; it does not hammer the server.</span>
+      </div>
+    </div>
+
+    <p class="cap">The result: Keyword Explorer, Topic Discovery and Keyword Planner all run from a terminal, and any agent can call them with one command.</p>
+  </section>
+
+  <!-- ══ 2 ══ -->
+  <section id="assets">
+    <div class="sec-head">
+      <span class="kicker">Requirements</span>
+      <h2>What you need</h2>
+      <p class="cap">Five things. None of them has a workaround.</p>
+    </div>
+    <div class="assets">
+      <div class="asset"><div class="box"></div><div class="asset-b">
+        <b>A WriterZen account whose plan includes the tools</b>
+        <span>There is no trial mode to fall back on. Step 4 shows you how to check your own allowances.</span>
+      </div></div>
+      <div class="asset"><div class="box"></div><div class="asset-b">
+        <b>A browser signed in to that account</b>
+        <span>Any browser with DevTools. You will copy two values out of it and nothing else.</span>
+      </div></div>
+      <div class="asset"><div class="box"></div><div class="asset-b">
+        <b>A machine with Python 3.7 or newer</b>
+        <span>That can reach <code>app.writerzen.net</code>. No packages to install — <code>wz</code> uses only the standard library.</span>
+      </div></div>
+      <div class="asset"><div class="box"></div><div class="asset-b">
+        <b>The <code>writerzen-kit</code> files</b>
+        <span><code>wz</code> plus the docs. Unpack them anywhere.</span>
+      </div></div>
+      <div class="asset"><div class="box"></div><div class="asset-b">
+        <b>Your market: a country name and a language code</b>
+        <span>Such as <code>Germany</code> and <code>de</code>. Set once, never typed again.</span>
+      </div></div>
+      <div class="asset no"><div class="box"></div><div class="asset-b">
+        <b>A browser extension? Not needed — and it will not work</b>
+        <span>Extensions like Cookie-Editor <strong>cannot export</strong> the cookie that matters, because it is <code>httpOnly</code>. That was the first thing we tried and it cost us an afternoon. DevTools is the only way.</span>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ══ 3 ══ -->
+  <section id="install">
+    <div class="sec-head">
+      <span class="kicker">Setup</span>
+      <h2>Four steps</h2>
+    </div>
+    <div class="stepwrap">
+
+      <div class="step">
+        <div class="step-head"><div class="step-num">1</div><h3>Put the tool on your PATH</h3></div>
+<pre>cd writerzen-kit
+install -m 755 wz /usr/local/bin/wz
+wz --help</pre>
+        <p>It will complain that there is no session. That is expected — that is the next step.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-head"><div class="step-num">2</div><h3>Set your market once</h3></div>
+<pre>export WZ_LOC="Germany"
+export WZ_LANG=de</pre>
+        <p>Without these the defaults are the United States and English, and you will get numbers about someone else's market without noticing.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-head"><div class="step-num">3</div><h3>Copy the cookies out of the browser</h3></div>
+        <ol class="substeps">
+          <li>Sign in to WriterZen as usual.</li>
+          <li><code>F12</code> → <strong>Application</strong> → <strong>Cookies</strong> → <code>https://app.writerzen.net</code></li>
+          <li>Copy the values of exactly two cookies: <code>writerzen_session</code> and <code>XSRF-TOKEN</code></li>
+        </ol>
+<pre>mkdir -p ~/.writerzen &amp;&amp; chmod 700 ~/.writerzen
+cat &gt; ~/.writerzen/session.txt &lt;&lt;'EOF'
+writerzen_session=<span class="c">PASTE_THE_VALUE_HERE</span>
+XSRF-TOKEN=<span class="c">PASTE_THE_VALUE_HERE</span>
+EOF
+chmod 600 ~/.writerzen/session.txt</pre>
+        <p class="cap">Both must come from the same browser session. Sign out and they die together.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-head"><div class="step-num">4</div><h3>Check that it all works</h3></div>
+<pre>wz session check
+wz limits</pre>
+        <p><code>session check</code> must print your remaining keyword credits. <code>limits</code> must show a <strong>non-zero</strong> figure for the tools you intend to use. A zero means that tool is not in your plan, and no amount of retrying will change it.</p>
+      </div>
+
+    </div>
+
+    <div class="note">
+      <p><strong>The session file is a password. Treat it as one.</strong></p>
+      <p><code>chmod 600</code>, never commit it, never paste it into a chat or a log. And never share it with another person — each person exports cookies from their own subscription, because sharing a session means sharing the account.</p>
+    </div>
+  </section>
+
+  <!-- ══ 4 ══ -->
+  <section id="loop">
+    <div class="sec-head">
+      <span class="kicker">The work</span>
+      <h2>The loop: from a seed keyword to a page plan</h2>
+      <p class="cap">Six steps. Two are free, one costs credits, and one is you.</p>
+    </div>
+
+    <div class="loop">
+      <div class="loop-row"><div class="loop-n">1</div><div class="loop-what"><b>Check</b><span>wz session check &amp;&amp; wz limits</span></div><div class="chip free">free</div></div>
+      <div class="loop-row"><div class="loop-n">2</div><div class="loop-what"><b>Widen</b><span>wz kw "seed"</span></div><div class="chip free">free</div></div>
+      <div class="loop-row"><div class="loop-n">3</div><div class="loop-what"><b>Narrow</b><span>you, with your own judgment</span></div><div class="chip you">your job</div></div>
+      <div class="loop-row"><div class="loop-n">4</div><div class="loop-what"><b>Cluster</b><span>wz plan create --file list.txt</span></div><div class="chip cost">1 credit per keyword</div></div>
+      <div class="loop-row"><div class="loop-n">5</div><div class="loop-what"><b>Verify</b><span>wz plan matrix ID</span></div><div class="chip free">free</div></div>
+      <div class="loop-row"><div class="loop-n">6</div><div class="loop-what"><b>Enrich</b><span>wz topic "cluster head"</span></div><div class="chip free">free</div></div>
+    </div>
+
+    <p><strong>One idea underneath all of it:</strong> WriterZen gives you excellent raw material and mediocre conclusions. The volumes, the ranking pages and the SERP-overlap clustering are real. The topic labels, the relevance score and the "golden keyword" columns are not. So let the tool gather, and do the judging yourself.</p>
+
+    <div class="stepwrap">
+
+      <div class="step">
+        <div class="step-head"><div class="step-num">2</div><h3>Widen</h3></div>
+<pre>wz kw "standing desk" --top 40</pre>
+        <p>You get every idea WriterZen has for that seed, with volume and competition. A seed usually returns over a thousand ideas; <code>--top</code> only limits what prints, and the full set is saved as JSON.</p>
+        <p>Read <strong>volume</strong> and <strong>competition</strong>. Ignore <code>cpc (raw)</code> as money — it comes back in a unit roughly <strong>23,000×</strong> the dollars the planner reports for the same keyword.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-head"><div class="step-num">3</div><h3>Narrow — this step is yours</h3></div>
+        <p>Out of a thousand ideas, most are irrelevant, off-market, or another company's brand. Cut them down to the twenty or fifty you would genuinely write for. It takes ten minutes, and it is the difference between clustering something meaningful and spending credits on noise.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-head"><div class="step-num">4</div><h3>Cluster</h3></div>
+<pre>wz plan create --name "Desk buying guides" --file keywords.txt</pre>
+        <p>One credit per keyword. Ten keywords finish in well under a minute. What comes back is groups of keywords that <strong>share search results</strong> — keywords Google treats as the same question. Which means: <strong>each group is one page to write, not one keyword</strong>.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-head"><div class="step-num">5</div><h3>Verify before you trust it</h3></div>
+<pre>wz plan matrix 179404</pre>
+        <p>This is the step people skip, and it is the most useful one. It prints how many of the top ten results each pair of keywords actually shares:</p>
+        <div class="scroll matrix">
+          <table>
+            <thead><tr><th class="lbl">&nbsp;</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>&nbsp;</th></tr></thead>
+            <tbody>
+              <tr><th class="lbl">1. ecommerce platform</th><td class="self">9</td><td class="hi">5</td><td>1</td><td>1</td><td>2</td><td>2</td><td class="grp">A</td></tr>
+              <tr><th class="lbl">2. best ecommerce platform</th><td class="hi">5</td><td class="self">8</td><td>1</td><td>2</td><td>2</td><td>2</td><td class="grp">A</td></tr>
+              <tr><th class="lbl">3. shopify pricing</th><td>1</td><td>1</td><td class="self">8</td><td>1</td><td>1</td><td>2</td><td class="grp">—</td></tr>
+              <tr><th class="lbl">4. online store builder</th><td>1</td><td>2</td><td>1</td><td class="self">10</td><td>1</td><td>1</td><td class="grp">—</td></tr>
+              <tr><th class="lbl">5. headless ecommerce</th><td>2</td><td>2</td><td>1</td><td>1</td><td class="self">8</td><td>1</td><td class="grp">—</td></tr>
+              <tr><th class="lbl">6. shopify vs woocommerce</th><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td class="self">7</td><td class="grp">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Read it like this: keywords 1 and 2 share 5 of their ten results, so they are one page. Everything else shares 1–2 with everything else, so those are <strong>four separate pages, not a cluster that failed</strong>.</p>
+        <p>The warning sign is a keyword scoring about the same against two different clusters — it sits on a boundary, and that one is yours to decide.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-head"><div class="step-num">6</div><h3>Enrich</h3></div>
+<pre>wz topic "ecommerce platform" --top 30</pre>
+        <p>For each cluster, take its highest-volume keyword and ask what already ranks. You get the <strong>real headlines</strong> of the pages that rank, their URLs, and the phrases around them. That is your brief: what the existing top results promise, in their own words.</p>
+      </div>
+
+    </div>
+
+    <h3>A short worked example</h3>
+    <p class="cap">Six keywords about ecommerce platforms — United States, English. Total spend: six credits and about four minutes.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Cluster</th><th>Keyword</th><th>Volume</th><th>Competition</th></tr></thead>
+        <tbody>
+          <tr><td class="tag-cl">ecommerce platform</td><td class="kw">ecommerce platform</td><td class="num">14,800</td><td class="num">10</td></tr>
+          <tr><td class="tag-cl">ecommerce platform</td><td class="kw">best ecommerce platform</td><td class="num">1,000</td><td class="num">43</td></tr>
+          <tr><td class="tag-none">—</td><td class="kw">shopify pricing</td><td class="num">9,900</td><td class="num">42</td></tr>
+          <tr><td class="tag-none">—</td><td class="kw">online store builder</td><td class="num">1,600</td><td class="num">17</td></tr>
+          <tr><td class="tag-none">—</td><td class="kw">headless ecommerce</td><td class="num">590</td><td class="num">36</td></tr>
+          <tr><td class="tag-none">—</td><td class="kw">shopify vs woocommerce</td><td class="num">590</td><td class="num">28</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>That is a <strong>five-page plan</strong>, not one page with six keywords — and <code>shopify pricing</code>, at 9,900 searches with almost no overlap with anything, is its own page and probably the first one to write.</p>
+
+    <h3>Decision rules</h3>
+    <div class="rules">
+      <p><strong><code>--level</code> is the grouping threshold</strong> — how many shared results two keywords need to land together. It defaults to 3. Raise it to 5 for tight, small clusters when you have hundreds of keywords; drop it to 2 when everything comes back unclustered.</p>
+      <p><strong>Batch size</strong> — ten to fifty keywords is comfortable. Beyond a few hundred it gets slow and the credit cost stops being trivial. Split by topic area.</p>
+      <p><strong>Zero-volume keywords still cluster correctly</strong>, because the grouping reads search results rather than numbers. Do not delete them in step 3 just because another tool reported <code>n/a</code>.</p>
+      <p><strong>Every command saves its raw response</strong> in <code>$WZ_OUT</code>. Nothing you paid for is lost to a summary.</p>
+    </div>
+  </section>
+
+  <!-- ══ 5 ══ -->
+  <section id="prompts">
+    <div class="sec-head">
+      <span class="kicker">Running it</span>
+      <h2>Prompts to start with</h2>
+      <p class="cap">Copy what you need and change what is in brackets. The order matches the loop above.</p>
+    </div>
+    <div class="prompts">
+
+      <div class="prompt">
+        <div class="p-head">
+          <div class="p-title"><span class="p-n">01</span><b>First conversation with the agent</b><span>once</span></div>
+          <button class="copy" type="button" data-src="p1">Copy</button>
+        </div>
+        <div class="p-body" id="p1">The writerzen-kit files are at: [path].
+
+Read SKILL.md first, then run: wz session check and wz limits.
+
+Tell me briefly: is the session alive, and are any of the three tools missing from the subscription?
+
+If the session is dead, stop and tell me the steps I need to take myself — do not look for another way in, and do not ask me to paste cookies into this chat.</div>
+        <p class="p-note">That last line matters: without it an agent may try other routes in, or ask you to paste a cookie into the conversation.</p>
+      </div>
+
+      <div class="prompt">
+        <div class="p-head">
+          <div class="p-title"><span class="p-n">02</span><b>Keyword research</b><span>free</span></div>
+          <button class="copy" type="button" data-src="p2">Copy</button>
+        </div>
+        <div class="p-body" id="p2">Run: wz kw "[seed keyword]"
+
+Show me the top 40 by volume, with competition.
+
+Do not present the CPC column as money, and do not say anything about allintitle or KGR — both are broken in this language.
+
+And tell me which market and language these numbers describe.</div>
+      </div>
+
+      <div class="prompt">
+        <div class="p-head">
+          <div class="p-title"><span class="p-n">03</span><b>Narrowing the list</b><span>saves money</span></div>
+          <button class="copy" type="button" data-src="p3">Copy</button>
+        </div>
+        <div class="p-body" id="p3">From the results above, build a shortlist of the keywords directly relevant to [my business].
+
+Drop other companies' brand names, anything outside [my country], and anything I could not write a page about.
+
+Write it one keyword per line to keywords.txt, and before going further tell me how many there are and what it will cost in credits.</div>
+      </div>
+
+      <div class="prompt">
+        <div class="p-head">
+          <div class="p-title"><span class="p-n">04</span><b>Cluster, then verify</b><span>the only command that costs</span></div>
+          <button class="copy" type="button" data-src="p4">Copy</button>
+        </div>
+        <div class="p-body" id="p4">Run: wz plan create --name "[project name]" --file keywords.txt
+
+When it finishes, run: wz plan matrix [project id]
+
+Then tell me:
+- how many clusters came out, and what is in each
+- which keywords were left unclustered
+- whether any keyword sits on a boundary — its overlap is close against two clusters</div>
+        <p class="p-note">The matrix is the evidence that makes a cluster reviewable instead of something you take on faith.</p>
+      </div>
+
+      <div class="prompt">
+        <div class="p-head">
+          <div class="p-title"><span class="p-n">05</span><b>A brief per page</b><span>free</span></div>
+          <button class="copy" type="button" data-src="p5">Copy</button>
+        </div>
+        <div class="p-body" id="p5">For each cluster, take its highest-volume keyword and run: wz topic "[keyword]"
+
+Give me, per cluster:
+- a proposed page title
+- the 10 most relevant headlines ranking today, with their URLs
+- the related phrases worth covering
+
+Ignore the topic labels and the relevance score the tool prints — they do not hold up in this language.</div>
+      </div>
+
+      <div class="prompt">
+        <div class="p-head">
+          <div class="p-title"><span class="p-n">06</span><b>Quick check</b><span>before any session</span></div>
+          <button class="copy" type="button" data-src="p6">Copy</button>
+        </div>
+        <div class="p-body" id="p6">Run wz session check and wz limits, and tell me in two lines: is the session alive, and how many keyword credits are left?</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ 6 ══ -->
+  <section id="never">
+    <div class="sec-head">
+      <span class="kicker">Warnings</span>
+      <h2>What never to report as a finding</h2>
+    </div>
+    <div class="stop">
+      <p>Four things WriterZen prints that look like insight and are not:</p>
+      <ul>
+        <li><strong>allintitle and KGR</strong> — 0 and ~1.0 for every non-English keyword tested. It reads as "every keyword is a golden opportunity". It is a broken field, not an opportunity.</li>
+        <li><strong>Topic Discovery's topic ranking</strong> — it splits a phrase into fragments and reports each fragment's own volume as a topic's. In one run the "top topics" included a bare preposition and a business from an entirely unrelated industry.</li>
+        <li><strong>Its relevance score</strong> — 40 of 100 topics in that run scored an identical 87.</li>
+        <li><strong>The AI name a cluster is given</strong> — two clearly different clusters were handed the same label. Use the cluster's highest-volume keyword instead.</li>
+      </ul>
+      <p>And one that is a trap rather than a bug: <strong>CPC is not the same unit in both tools.</strong> Never put Explorer's <code>cpc (raw)</code> and the Planner's dollars in one table.</p>
+    </div>
+
+    <h3>When it stops working</h3>
+    <div class="stop">
+      <ul>
+        <li><strong>"session has expired"</strong> — the one condition that will recur. Redo step 3. Two minutes, and an agent cannot do it for you.</li>
+        <li><strong>Numbers about the wrong country</strong> — <code>WZ_LOC</code> and <code>WZ_LANG</code> are unset. Step 2.</li>
+        <li><strong>A zero in <code>wz limits</code></strong> — that tool is not in your plan.</li>
+        <li><strong>An agent reporting results without running anything</strong> — ask it to run <code>wz limits</code> and read you the numbers. Real numbers mean it actually reached the tool.</li>
+      </ul>
+    </div>
+
+    <p class="foot">Every number on this page came from live runs, not invented examples. Maintenance details are in <code>SOP.md</code>, and the per-tool reference is in <code>SKILL.md</code> — both in <a href="https://github.com/linkawy/writerzen-kit">the repository</a>.</p>
+  </section>
+
+</div>
+
+<script>
+  (function(){
+    document.querySelectorAll(".copy").forEach(function(btn){
+      var src = document.getElementById(btn.getAttribute("data-src"));
+      if(!src) return;
+      btn.addEventListener("click", function(){
+        var text = src.innerText;
+        function done(){
+          btn.textContent = "Copied";
+          btn.classList.add("done");
+          setTimeout(function(){ btn.textContent = "Copy"; btn.classList.remove("done"); }, 1600);
+        }
+        function fallback(){
+          var ta = document.createElement("textarea");
+          ta.value = text; ta.setAttribute("readonly","");
+          ta.style.position = "fixed"; ta.style.top = "-1000px";
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand("copy"); done(); } catch(e){ btn.textContent = "Copy manually"; }
+          document.body.removeChild(ta);
+        }
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(done, fallback);
+        } else { fallback(); }
+      });
+    });
+  })();
+</script>
 </body>
 </html>
